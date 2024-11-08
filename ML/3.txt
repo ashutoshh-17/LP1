@@ -1,6 +1,6 @@
 import pandas as pd
 ------------------
-df=pd.read_csv('Admission_Predict.csv')
+df=pd.read_csv('3.csv')
 --------------------------------------------
 df.columns
 -----------------------------------
