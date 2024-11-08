@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 -----------------------------------------
-df=pd.read_csv('Mall_Customers.csv')
+df=pd.read_csv('4.csv')
 df.head()
 -------------------------------------------
 df.info()
@@ -107,7 +107,7 @@ plt.show()
 import plotly.figure_factory as ff
 import plotly.offline as py
 ------------------------------------------
-data=pd.read_csv('Mall_Customers.csv')
+data=pd.read_csv('4.csv')
 dat=ff.create_table(data.head())
 py.iplot(dat)
 -----------------------------------------
