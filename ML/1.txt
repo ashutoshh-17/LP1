@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 -------------------------------------
-df=pd.read_csv('Heart.csv')
+df=pd.read_csv('1.csv')
 print(df)
 --------------------------------------
 df.shape
