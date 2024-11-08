@@ -38,7 +38,7 @@ print('intercept',b[0])
 print('slope',b[1])
 plot_regline(x,y,b)
 ---------------------------------------
-df=pd.read_csv('weight-height.csv')
+df=pd.read_csv('2.csv')
 print(df)
 ---------------------------------------
 df.columns
