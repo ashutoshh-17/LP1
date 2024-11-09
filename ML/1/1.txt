@@ -25,8 +25,8 @@ df.info
 from sklearn.model_selection import train_test_split
 -------------------------------------------------------
 hd=df[['Age','Sex','ChestPain','RestBP','Chol']]
-x=hd.drop('Chol',axis=1)
-y=hd['Chol']
+x=hd.drop('Age',axis=1)
+y=hd['Age']
 print(x)
 print(y)
 ----------------------------------------------------
@@ -35,97 +35,22 @@ xtrain.shape
 ---------------------
 ytest.shape
 -----------------------
-df['Sex']=df['Sex'].replace([1],'Male')
-df['Sex']=df['Sex'].replace([0],'Female')
-print(df)
---------------------------------------------
-df1=df[df['AHD'].values=='Yes']
-print(df1)
-print(df1.Age.max())
-print(df1.Age.min())
----------------------------------------------
-df.groupby('AHD').AHD.count().plot.bar(ylim=0)
-plt.plot()
------------------------------------------------
-df.plot(kind='box',subplots=True,layout=(2,7),sharex=False,figsize=(20,10),color='blue')
-----------------------------------------------------------------------------------------
-df['Age'].hist(figsize=(10,13))
-plt.title('Age Histogram')
-----------------------------------
-df.hist(figsize=(12,15))
-plt.show()
---------------------------------
-pd.crosstab(df.Age,df.AHD).plot(kind='bar',figsize=(12,15))
-plt.title('Barchart for Age V AHD')
-----------------------------------------------
-pd.crosstab(df.Age,df.ChestPain).plot(kind='bar',figsize=(15,18))
-plt.title('Barchart for Age V Chestpain')
---------------------------------------------
-plt.scatter(df[df['AHD']=='No']['Age'],df[df['AHD']=='No']['Chol'],marker='o',c='blue',label='Healthy')
-plt.scatter(df[df['AHD']=='Yes']['Age'],df[df['AHD']=='Yes']['Chol'],marker='o',c='red',label='Not-Healthy')
-plt.legend()
------------------------------------------------
-sns.countplot(x='AHD',hue='AHD',data=df)
---------------------------------------------
-sns.boxplot(x='AHD',y='Oldpeak',data=df)
-----------------------------------------------
-sns.scatterplot(x='Chol',y='RestBP',hue='Sex',size=None,data=df)
------------------------------------------------------------
-sns.scatterplot(x='Chol',y='RestBP',hue='Sex',size=None,data=df)
---------------------------------------------------------------
-sns.pairplot(df,kind='Scatter',diag_kind='hist')
-plt.show()
----------------------------
-sns.violinplot(x='Sex',y='Age',data=df,palette={"lightblue","lightpink"})
----------------------------
-df.Age.value_counts()[:10]
-sns.barplot(x=df.Age.value_counts()[:10].index,y=df.Age.value_counts()[:10].values)
-----------------------------------------
-sns.regplot(x='Age',y='RestBP',data=df)
------------------------------------------
-sns.countplot(x='ChestPain',data=df)
----------------------------------------------
-#below is answer of subquestion (f). If asked to find by implementing in code.
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-import pandas as pd
-from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score, f1_score
-+++++++++++++++++++++++++++++++++++++++++++++++
-data = pd.read_csv('1.csv')
-+++++++++++++++++++++++++++++++++++++++++++++
-selected_data = data[['Age', 'Sex', 'ChestPain', 'RestBP', 'Chol']]
-++++++++++++++++++++++++++++++++++++++++++++
-train_data, test_data = train_test_split(selected_data, test_size=0.25, random_state=42)
-++++++++++++++++++++++++++++++++++++++++++++++
-print("Training data shape:", train_data.shape)
-print("Testing data shape:", test_data.shape)
-++++++++++++++++++++++++++++++++++++++++++=
-total_samples = 500
-predicted_positive = 100
-actual_positive = 50
-true_positive = 45  # Predicted positive and actually positive
-false_positive = predicted_positive - true_positive  # Predicted positive but actually negative
-false_negative = actual_positive - true_positive  # Actually positive but predicted negative
-true_negative = total_samples - (true_positive + false_positive + false_negative)
-++++++++++++++++++++++++++++++++++++++++++++=
-confusion_mat = [[true_negative, false_positive],
-                 [false_negative, true_positive]]
-print("\nConfusion Matrix:")
-print(pd.DataFrame(confusion_mat, columns=["Predicted Negative", "Predicted Positive"],
-                   index=["Actual Negative", "Actual Positive"]))
-+++++++++++++++++++++++++++++++++++++++++++++++++===
-accuracy = accuracy_score([0]*(true_negative+false_positive) + [1]*(false_negative+true_positive), 
-                          [0]*true_negative + [1]*false_positive + [0]*false_negative + [1]*true_positive)
-precision = precision_score([0]*(true_negative+false_positive) + [1]*(false_negative+true_positive), 
-                            [0]*true_negative + [1]*false_positive + [0]*false_negative + [1]*true_positive)
-recall = recall_score([0]*(true_negative+false_positive) + [1]*(false_negative+true_positive), 
-                      [0]*true_negative + [1]*false_positive + [0]*false_negative + [1]*true_positive)
-f1 = f1_score([0]*(true_negative+false_positive) + [1]*(false_negative+true_positive), 
-              [0]*true_negative + [1]*false_positive + [0]*false_negative + [1]*true_positive)
-++++++++++++++++++++++++++++++++++++++++++++++++++
-print("\nMetrics:")
-print(f"Accuracy: {accuracy:.2f}")
-print(f"Precision: {precision:.2f}")
-print(f"Recall: {recall:.2f}")
-print(f"F1 Score: {f1:.2f}")
-
+--------------------------------------------
+y_true = np.array([1] * 50 + [0] * 450) 
+y_pred = np.array([1] * 45 + [0] * 5 + [1] * 55 + [0] * 395)
+---------------------------------------------
+conf_matrix = confusion_matrix(y_true, y_pred)
+-----------------------------------------------
+conf_matrix
+----------------------------------------------------------------------------------------
+accuracy = accuracy_score(y_true, y_pred)
+precision = precision_score(y_true, y_pred)
+recall = recall_score(y_true, y_pred)
+f1 = f1_score(y_true, y_pred)
+----------------------------------
+print("Confusion Matrix:\n", conf_matrix)
+print("Accuracy:", accuracy)
+print("Precision:", precision)
+print("Recall:", recall)
+print("F1 Score:", f1)
