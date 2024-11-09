@@ -11,7 +11,7 @@ df.columns
 df.dtypes
 ---------------------------------------
 x=df.iloc[:,0].values
-y=df.iloc[:,12].values
+y=df.iloc[:,13].values
 plt.scatter(x,y,color='b',marker='o',s=80)
 type(b)
 print('intercept',b[0])
