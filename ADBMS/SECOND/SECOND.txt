@@ -1,0 +1,349 @@
+//SECOND
+
+
+flight_management> db.flights.find()
+[
+  {
+    _id: ObjectId('672f997d5da891e00a86b01d'),
+    flightNumber: 'AI101',
+    airline: 'Air India',
+    source: 'Delhi',
+    destination: 'Mumbai',
+    departureTime: '2024-11-10T10:00:00',
+    arrivalTime: '2024-11-10T12:30:00',
+    status: 'On Time',
+    stops: 0,
+    availableSeats: 120,
+    fare: 5000,
+    amenities: [ 'WiFi', 'In-flight meal', 'Entertainment' ]
+  },
+  {
+    _id: ObjectId('672f997d5da891e00a86b01e'),
+    flightNumber: 'IN202',
+    airline: 'IndiGo',
+    source: 'Mumbai',
+    destination: 'Bangalore',
+    departureTime: '2024-11-10T13:00:00',
+    arrivalTime: '2024-11-10T15:00:00',
+    status: 'Delayed',
+    stops: 1,
+    availableSeats: 150,
+    fare: 4500,
+    amenities: [ 'In-flight meal' ]
+  },
+  {
+    _id: ObjectId('672f997d5da891e00a86b01f'),
+    flightNumber: 'SG303',
+    airline: 'SpiceJet',
+    source: 'Pune',
+    destination: 'Chennai',
+    departureTime: '2024-11-10T17:30:00',
+    arrivalTime: '2024-11-10T20:00:00',
+    status: 'Cancelled',
+    stops: 0,
+    availableSeats: 0,
+    fare: 3000,
+    amenities: []
+  },
+  {
+    _id: ObjectId('672f997d5da891e00a86b020'),
+    flightNumber: 'AI404',
+    airline: 'Air India',
+    source: 'Delhi',
+    destination: 'Kolkata',
+    departureTime: '2024-11-10T06:00:00',
+    arrivalTime: '2024-11-10T08:30:00',
+    status: 'On Time',
+    stops: 1,
+    availableSeats: 100,
+    fare: 6000,
+    amenities: [ 'WiFi', 'Entertainment' ]
+  }
+]
+flight_management> db.flights.find({ amenities: { $size: 0 } })
+[
+  {
+    _id: ObjectId('672f997d5da891e00a86b01f'),
+    flightNumber: 'SG303',
+    airline: 'SpiceJet',
+    source: 'Pune',
+    destination: 'Chennai',
+    departureTime: '2024-11-10T17:30:00',
+    arrivalTime: '2024-11-10T20:00:00',
+    status: 'Cancelled',
+    stops: 0,
+    availableSeats: 0,
+    fare: 3000,
+    amenities: []
+  }
+]
+flight_management> db.flights.find()
+[
+  {
+    _id: ObjectId('672f997d5da891e00a86b01d'),
+    flightNumber: 'AI101',
+    airline: 'Air India',
+    source: 'Delhi',
+    destination: 'Mumbai',
+    departureTime: '2024-11-10T10:00:00',
+    arrivalTime: '2024-11-10T12:30:00',
+    status: 'On Time',
+    stops: 0,
+    availableSeats: 120,
+    fare: 5000,
+    amenities: [ 'WiFi', 'In-flight meal', 'Entertainment' ]
+  },
+  {
+    _id: ObjectId('672f997d5da891e00a86b01e'),
+    flightNumber: 'IN202',
+    airline: 'IndiGo',
+    source: 'Mumbai',
+    destination: 'Bangalore',
+    departureTime: '2024-11-10T13:00:00',
+    arrivalTime: '2024-11-10T15:00:00',
+    status: 'Delayed',
+    stops: 1,
+    availableSeats: 150,
+    fare: 4500,
+    amenities: [ 'In-flight meal' ]
+  },
+  {
+    _id: ObjectId('672f997d5da891e00a86b01f'),
+    flightNumber: 'SG303',
+    airline: 'SpiceJet',
+    source: 'Pune',
+    destination: 'Chennai',
+    departureTime: '2024-11-10T17:30:00',
+    arrivalTime: '2024-11-10T20:00:00',
+    status: 'Cancelled',
+    stops: 0,
+    availableSeats: 0,
+    fare: 3000,
+    amenities: []
+  },
+  {
+    _id: ObjectId('672f997d5da891e00a86b020'),
+    flightNumber: 'AI404',
+    airline: 'Air India',
+    source: 'Delhi',
+    destination: 'Kolkata',
+    departureTime: '2024-11-10T06:00:00',
+    arrivalTime: '2024-11-10T08:30:00',
+    status: 'On Time',
+    stops: 1,
+    availableSeats: 100,
+    fare: 6000,
+    amenities: [ 'WiFi', 'Entertainment' ]
+  }
+]
+flight_management> db.flights.find({ amenities: { $in: ["WiFi"] } })
+[
+  {
+    _id: ObjectId('672f997d5da891e00a86b01d'),
+    flightNumber: 'AI101',
+    airline: 'Air India',
+    source: 'Delhi',
+    destination: 'Mumbai',
+    departureTime: '2024-11-10T10:00:00',
+    arrivalTime: '2024-11-10T12:30:00',
+    status: 'On Time',
+    stops: 0,
+    availableSeats: 120,
+    fare: 5000,
+    amenities: [ 'WiFi', 'In-flight meal', 'Entertainment' ]
+  },
+  {
+    _id: ObjectId('672f997d5da891e00a86b020'),
+    flightNumber: 'AI404',
+    airline: 'Air India',
+    source: 'Delhi',
+    destination: 'Kolkata',
+    departureTime: '2024-11-10T06:00:00',
+    arrivalTime: '2024-11-10T08:30:00',
+    status: 'On Time',
+    stops: 1,
+    availableSeats: 100,
+    fare: 6000,
+    amenities: [ 'WiFi', 'Entertainment' ]
+  }
+]
+flight_management> db.flights.find({ flightNumber: { $regex: /^AI/ } })
+[
+  {
+    _id: ObjectId('672f997d5da891e00a86b01d'),
+    flightNumber: 'AI101',
+    airline: 'Air India',
+    source: 'Delhi',
+    destination: 'Mumbai',
+    departureTime: '2024-11-10T10:00:00',
+    arrivalTime: '2024-11-10T12:30:00',
+    status: 'On Time',
+    stops: 0,
+    availableSeats: 120,
+    fare: 5000,
+    amenities: [ 'WiFi', 'In-flight meal', 'Entertainment' ]
+  },
+  {
+    _id: ObjectId('672f997d5da891e00a86b020'),
+    flightNumber: 'AI404',
+    airline: 'Air India',
+    source: 'Delhi',
+    destination: 'Kolkata',
+    departureTime: '2024-11-10T06:00:00',
+    arrivalTime: '2024-11-10T08:30:00',
+    status: 'On Time',
+    stops: 1,
+    availableSeats: 100,
+    fare: 6000,
+    amenities: [ 'WiFi', 'Entertainment' ]
+  }
+]
+flight_management> db.flights.find()
+[
+  {
+    _id: ObjectId('672f997d5da891e00a86b01d'),
+    flightNumber: 'AI101',
+    airline: 'Air India',
+    source: 'Delhi',
+    destination: 'Mumbai',
+    departureTime: '2024-11-10T10:00:00',
+    arrivalTime: '2024-11-10T12:30:00',
+    status: 'On Time',
+    stops: 0,
+    availableSeats: 120,
+    fare: 5000,
+    amenities: [ 'WiFi', 'In-flight meal', 'Entertainment' ]
+  },
+  {
+    _id: ObjectId('672f997d5da891e00a86b01e'),
+    flightNumber: 'IN202',
+    airline: 'IndiGo',
+    source: 'Mumbai',
+    destination: 'Bangalore',
+    departureTime: '2024-11-10T13:00:00',
+    arrivalTime: '2024-11-10T15:00:00',
+    status: 'Delayed',
+    stops: 1,
+    availableSeats: 150,
+    fare: 4500,
+    amenities: [ 'In-flight meal' ]
+  },
+  {
+    _id: ObjectId('672f997d5da891e00a86b01f'),
+    flightNumber: 'SG303',
+    airline: 'SpiceJet',
+    source: 'Pune',
+    destination: 'Chennai',
+    departureTime: '2024-11-10T17:30:00',
+    arrivalTime: '2024-11-10T20:00:00',
+    status: 'Cancelled',
+    stops: 0,
+    availableSeats: 0,
+    fare: 3000,
+    amenities: []
+  },
+  {
+    _id: ObjectId('672f997d5da891e00a86b020'),
+    flightNumber: 'AI404',
+    airline: 'Air India',
+    source: 'Delhi',
+    destination: 'Kolkata',
+    departureTime: '2024-11-10T06:00:00',
+    arrivalTime: '2024-11-10T08:30:00',
+    status: 'On Time',
+    stops: 1,
+    availableSeats: 100,
+    fare: 6000,
+    amenities: [ 'WiFi', 'Entertainment' ]
+  }
+]
+flight_management> db.flights.find({ stops: { $gte: 1 } })
+[
+  {
+    _id: ObjectId('672f997d5da891e00a86b01e'),
+    flightNumber: 'IN202',
+    airline: 'IndiGo',
+    source: 'Mumbai',
+    destination: 'Bangalore',
+    departureTime: '2024-11-10T13:00:00',
+    arrivalTime: '2024-11-10T15:00:00',
+    status: 'Delayed',
+    stops: 1,
+    availableSeats: 150,
+    fare: 4500,
+    amenities: [ 'In-flight meal' ]
+  },
+  {
+    _id: ObjectId('672f997d5da891e00a86b020'),
+    flightNumber: 'AI404',
+    airline: 'Air India',
+    source: 'Delhi',
+    destination: 'Kolkata',
+    departureTime: '2024-11-10T06:00:00',
+    arrivalTime: '2024-11-10T08:30:00',
+    status: 'On Time',
+    stops: 1,
+    availableSeats: 100,
+    fare: 6000,
+    amenities: [ 'WiFi', 'Entertainment' ]
+  }
+]
+flight_management> db.flights.find()
+[
+  {
+    _id: ObjectId('672f997d5da891e00a86b01d'),
+    flightNumber: 'AI101',
+    airline: 'Air India',
+    source: 'Delhi',
+    destination: 'Mumbai',
+    departureTime: '2024-11-10T10:00:00',
+    arrivalTime: '2024-11-10T12:30:00',
+    status: 'On Time',
+    stops: 0,
+    availableSeats: 120,
+    fare: 5000,
+    amenities: [ 'WiFi', 'In-flight meal', 'Entertainment' ]
+  },
+  {
+    _id: ObjectId('672f997d5da891e00a86b01e'),
+    flightNumber: 'IN202',
+    airline: 'IndiGo',
+    source: 'Mumbai',
+    destination: 'Bangalore',
+    departureTime: '2024-11-10T13:00:00',
+    arrivalTime: '2024-11-10T15:00:00',
+    status: 'Delayed',
+    stops: 1,
+    availableSeats: 150,
+    fare: 4500,
+    amenities: [ 'In-flight meal' ]
+  },
+  {
+    _id: ObjectId('672f997d5da891e00a86b01f'),
+    flightNumber: 'SG303',
+    airline: 'SpiceJet',
+    source: 'Pune',
+    destination: 'Chennai',
+    departureTime: '2024-11-10T17:30:00',
+    arrivalTime: '2024-11-10T20:00:00',
+    status: 'Cancelled',
+    stops: 0,
+    availableSeats: 0,
+    fare: 3000,
+    amenities: []
+  },
+  {
+    _id: ObjectId('672f997d5da891e00a86b020'),
+    flightNumber: 'AI404',
+    airline: 'Air India',
+    source: 'Delhi',
+    destination: 'Kolkata',
+    departureTime: '2024-11-10T06:00:00',
+    arrivalTime: '2024-11-10T08:30:00',
+    status: 'On Time',
+    stops: 1,
+    availableSeats: 100,
+    fare: 6000,
+    amenities: [ 'WiFi', 'Entertainment' ]
+  }
+]

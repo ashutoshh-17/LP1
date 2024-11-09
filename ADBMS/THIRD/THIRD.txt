@@ -1,0 +1,545 @@
+//THIRD
+
+test> use flight
+switched to db flight
+flight> db.dropDatabase();
+{ ok: 1, dropped: 'flight' }
+flight> db.createCollection("flights")
+{ ok: 1 }
+flight> db.flights.find()
+
+flight> db.flights.insertMany([
+...   { flight_id: "AI101", airline: "Air India", source: "Pune", destination: "Delhi", seats_available: 100, price: 5000 },
+...   { flight_id: "6E202", airline: "Indigo", source: "Mumbai", destination: "Chennai", seats_available: 150, price: 4000 },
+...   { flight_id: "SG303", airline: "SpiceJet", source: "Bangalore", destination: "Hyderabad", seats_available: 120, price: 3500 }
+... ])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('672f99c597509d5920c73bf8'),
+    '1': ObjectId('672f99c597509d5920c73bf9'),
+    '2': ObjectId('672f99c597509d5920c73bfa')
+  }
+}
+flight> db.flights.find()
+[
+  {
+    _id: ObjectId('672f99c597509d5920c73bf8'),
+    flight_id: 'AI101',
+    airline: 'Air India',
+    source: 'Pune',
+    destination: 'Delhi',
+    seats_available: 100,
+    price: 5000
+  },
+  {
+    _id: ObjectId('672f99c597509d5920c73bf9'),
+    flight_id: '6E202',
+    airline: 'Indigo',
+    source: 'Mumbai',
+    destination: 'Chennai',
+    seats_available: 150,
+    price: 4000
+  },
+  {
+    _id: ObjectId('672f99c597509d5920c73bfa'),
+    flight_id: 'SG303',
+    airline: 'SpiceJet',
+    source: 'Bangalore',
+    destination: 'Hyderabad',
+    seats_available: 120,
+    price: 3500
+  }
+]
+flight> db.flights.find({ $where: "this.seats_available > 120" })
+[
+  {
+    _id: ObjectId('672f99c597509d5920c73bf9'),
+    flight_id: '6E202',
+    airline: 'Indigo',
+    source: 'Mumbai',
+    destination: 'Chennai',
+    seats_available: 150,
+    price: 4000
+  }
+]
+flight> db.flights.find()
+[
+  {
+    _id: ObjectId('672f99c597509d5920c73bf8'),
+    flight_id: 'AI101',
+    airline: 'Air India',
+    source: 'Pune',
+    destination: 'Delhi',
+    seats_available: 100,
+    price: 5000
+  },
+  {
+    _id: ObjectId('672f99c597509d5920c73bf9'),
+    flight_id: '6E202',
+    airline: 'Indigo',
+    source: 'Mumbai',
+    destination: 'Chennai',
+    seats_available: 150,
+    price: 4000
+  },
+  {
+    _id: ObjectId('672f99c597509d5920c73bfa'),
+    flight_id: 'SG303',
+    airline: 'SpiceJet',
+    source: 'Bangalore',
+    destination: 'Hyderabad',
+    seats_available: 120,
+    price: 3500
+  }
+]
+flight> db.flights.find({ $where: "this.price > 4000 && this.seats_available < 150" })
+[
+  {
+    _id: ObjectId('672f99c597509d5920c73bf8'),
+    flight_id: 'AI101',
+    airline: 'Air India',
+    source: 'Pune',
+    destination: 'Delhi',
+    seats_available: 100,
+    price: 5000
+  }
+]
+flight> db.flights.find()
+[
+  {
+    _id: ObjectId('672f99c597509d5920c73bf8'),
+    flight_id: 'AI101',
+    airline: 'Air India',
+    source: 'Pune',
+    destination: 'Delhi',
+    seats_available: 100,
+    price: 5000
+  },
+  {
+    _id: ObjectId('672f99c597509d5920c73bf9'),
+    flight_id: '6E202',
+    airline: 'Indigo',
+    source: 'Mumbai',
+    destination: 'Chennai',
+    seats_available: 150,
+    price: 4000
+  },
+  {
+    _id: ObjectId('672f99c597509d5920c73bfa'),
+    flight_id: 'SG303',
+    airline: 'SpiceJet',
+    source: 'Bangalore',
+    destination: 'Hyderabad',
+    seats_available: 120,
+    price: 3500
+  }
+]
+flight> db.flights.find({ $where: "this.airline === 'Air India' && this.price > 4500" })
+[
+  {
+    _id: ObjectId('672f99c597509d5920c73bf8'),
+    flight_id: 'AI101',
+    airline: 'Air India',
+    source: 'Pune',
+    destination: 'Delhi',
+    seats_available: 100,
+    price: 5000
+  }
+]
+flight> db.flights.find()
+[
+  {
+    _id: ObjectId('672f99c597509d5920c73bf8'),
+    flight_id: 'AI101',
+    airline: 'Air India',
+    source: 'Pune',
+    destination: 'Delhi',
+    seats_available: 100,
+    price: 5000
+  },
+  {
+    _id: ObjectId('672f99c597509d5920c73bf9'),
+    flight_id: '6E202',
+    airline: 'Indigo',
+    source: 'Mumbai',
+    destination: 'Chennai',
+    seats_available: 150,
+    price: 4000
+  },
+  {
+    _id: ObjectId('672f99c597509d5920c73bfa'),
+    flight_id: 'SG303',
+    airline: 'SpiceJet',
+    source: 'Bangalore',
+    destination: 'Hyderabad',
+    seats_available: 120,
+    price: 3500
+  }
+]
+flight> db.flights.find().limit(2)
+[
+  {
+    _id: ObjectId('672f99c597509d5920c73bf8'),
+    flight_id: 'AI101',
+    airline: 'Air India',
+    source: 'Pune',
+    destination: 'Delhi',
+    seats_available: 100,
+    price: 5000
+  },
+  {
+    _id: ObjectId('672f99c597509d5920c73bf9'),
+    flight_id: '6E202',
+    airline: 'Indigo',
+    source: 'Mumbai',
+    destination: 'Chennai',
+    seats_available: 150,
+    price: 4000
+  }
+]
+flight> db.flights.find()
+[
+  {
+    _id: ObjectId('672f99c597509d5920c73bf8'),
+    flight_id: 'AI101',
+    airline: 'Air India',
+    source: 'Pune',
+    destination: 'Delhi',
+    seats_available: 100,
+    price: 5000
+  },
+  {
+    _id: ObjectId('672f99c597509d5920c73bf9'),
+    flight_id: '6E202',
+    airline: 'Indigo',
+    source: 'Mumbai',
+    destination: 'Chennai',
+    seats_available: 150,
+    price: 4000
+  },
+  {
+    _id: ObjectId('672f99c597509d5920c73bfa'),
+    flight_id: 'SG303',
+    airline: 'SpiceJet',
+    source: 'Bangalore',
+    destination: 'Hyderabad',
+    seats_available: 120,
+    price: 3500
+  }
+]
+flight> db.flights.find().skip(1).limit(2)
+[
+  {
+    _id: ObjectId('672f99c597509d5920c73bf9'),
+    flight_id: '6E202',
+    airline: 'Indigo',
+    source: 'Mumbai',
+    destination: 'Chennai',
+    seats_available: 150,
+    price: 4000
+  },
+  {
+    _id: ObjectId('672f99c597509d5920c73bfa'),
+    flight_id: 'SG303',
+    airline: 'SpiceJet',
+    source: 'Bangalore',
+    destination: 'Hyderabad',
+    seats_available: 120,
+    price: 3500
+  }
+]
+flight> db.flights.find()
+[
+  {
+    _id: ObjectId('672f99c597509d5920c73bf8'),
+    flight_id: 'AI101',
+    airline: 'Air India',
+    source: 'Pune',
+    destination: 'Delhi',
+    seats_available: 100,
+    price: 5000
+  },
+  {
+    _id: ObjectId('672f99c597509d5920c73bf9'),
+    flight_id: '6E202',
+    airline: 'Indigo',
+    source: 'Mumbai',
+    destination: 'Chennai',
+    seats_available: 150,
+    price: 4000
+  },
+  {
+    _id: ObjectId('672f99c597509d5920c73bfa'),
+    flight_id: 'SG303',
+    airline: 'SpiceJet',
+    source: 'Bangalore',
+    destination: 'Hyderabad',
+    seats_available: 120,
+    price: 3500
+  }
+]
+flight> db.flights.find().sort({ price: -1 })
+[
+  {
+    _id: ObjectId('672f99c597509d5920c73bf8'),
+    flight_id: 'AI101',
+    airline: 'Air India',
+    source: 'Pune',
+    destination: 'Delhi',
+    seats_available: 100,
+    price: 5000
+  },
+  {
+    _id: ObjectId('672f99c597509d5920c73bf9'),
+    flight_id: '6E202',
+    airline: 'Indigo',
+    source: 'Mumbai',
+    destination: 'Chennai',
+    seats_available: 150,
+    price: 4000
+  },
+  {
+    _id: ObjectId('672f99c597509d5920c73bfa'),
+    flight_id: 'SG303',
+    airline: 'SpiceJet',
+    source: 'Bangalore',
+    destination: 'Hyderabad',
+    seats_available: 120,
+    price: 3500
+  }
+]
+flight> db.flights.find()
+[
+  {
+    _id: ObjectId('672f99c597509d5920c73bf8'),
+    flight_id: 'AI101',
+    airline: 'Air India',
+    source: 'Pune',
+    destination: 'Delhi',
+    seats_available: 100,
+    price: 5000
+  },
+  {
+    _id: ObjectId('672f99c597509d5920c73bf9'),
+    flight_id: '6E202',
+    airline: 'Indigo',
+    source: 'Mumbai',
+    destination: 'Chennai',
+    seats_available: 150,
+    price: 4000
+  },
+  {
+    _id: ObjectId('672f99c597509d5920c73bfa'),
+    flight_id: 'SG303',
+    airline: 'SpiceJet',
+    source: 'Bangalore',
+    destination: 'Hyderabad',
+    seats_available: 120,
+    price: 3500
+  }
+]
+flight> db.flights.find().sort({ price: 1 })
+[
+  {
+    _id: ObjectId('672f99c597509d5920c73bfa'),
+    flight_id: 'SG303',
+    airline: 'SpiceJet',
+    source: 'Bangalore',
+    destination: 'Hyderabad',
+    seats_available: 120,
+    price: 3500
+  },
+  {
+    _id: ObjectId('672f99c597509d5920c73bf9'),
+    flight_id: '6E202',
+    airline: 'Indigo',
+    source: 'Mumbai',
+    destination: 'Chennai',
+    seats_available: 150,
+    price: 4000
+  },
+  {
+    _id: ObjectId('672f99c597509d5920c73bf8'),
+    flight_id: 'AI101',
+    airline: 'Air India',
+    source: 'Pune',
+    destination: 'Delhi',
+    seats_available: 100,
+    price: 5000
+  }
+]
+flight> db.flights.find()
+[
+  {
+    _id: ObjectId('672f99c597509d5920c73bf8'),
+    flight_id: 'AI101',
+    airline: 'Air India',
+    source: 'Pune',
+    destination: 'Delhi',
+    seats_available: 100,
+    price: 5000
+  },
+  {
+    _id: ObjectId('672f99c597509d5920c73bf9'),
+    flight_id: '6E202',
+    airline: 'Indigo',
+    source: 'Mumbai',
+    destination: 'Chennai',
+    seats_available: 150,
+    price: 4000
+  },
+  {
+    _id: ObjectId('672f99c597509d5920c73bfa'),
+    flight_id: 'SG303',
+    airline: 'SpiceJet',
+    source: 'Bangalore',
+    destination: 'Hyderabad',
+    seats_available: 120,
+    price: 3500
+  }
+]
+flight> db.flights.find({ seats_available: { $lt: 130 } }).limit(1)
+[
+  {
+    _id: ObjectId('672f99c597509d5920c73bf8'),
+    flight_id: 'AI101',
+    airline: 'Air India',
+    source: 'Pune',
+    destination: 'Delhi',
+    seats_available: 100,
+    price: 5000
+  }
+]
+flight> db.flights.find()
+[
+  {
+    _id: ObjectId('672f99c597509d5920c73bf8'),
+    flight_id: 'AI101',
+    airline: 'Air India',
+    source: 'Pune',
+    destination: 'Delhi',
+    seats_available: 100,
+    price: 5000
+  },
+  {
+    _id: ObjectId('672f99c597509d5920c73bf9'),
+    flight_id: '6E202',
+    airline: 'Indigo',
+    source: 'Mumbai',
+    destination: 'Chennai',
+    seats_available: 150,
+    price: 4000
+  },
+  {
+    _id: ObjectId('672f99c597509d5920c73bfa'),
+    flight_id: 'SG303',
+    airline: 'SpiceJet',
+    source: 'Bangalore',
+    destination: 'Hyderabad',
+    seats_available: 120,
+    price: 3500
+  }
+]
+flight> db.flights.find({ $or: [{ source: "Pune" }, { source: "Mumbai" }] })
+[
+  {
+    _id: ObjectId('672f99c597509d5920c73bf8'),
+    flight_id: 'AI101',
+    airline: 'Air India',
+    source: 'Pune',
+    destination: 'Delhi',
+    seats_available: 100,
+    price: 5000
+  },
+  {
+    _id: ObjectId('672f99c597509d5920c73bf9'),
+    flight_id: '6E202',
+    airline: 'Indigo',
+    source: 'Mumbai',
+    destination: 'Chennai',
+    seats_available: 150,
+    price: 4000
+  }
+]
+flight> db.flights.find()
+[
+  {
+    _id: ObjectId('672f99c597509d5920c73bf8'),
+    flight_id: 'AI101',
+    airline: 'Air India',
+    source: 'Pune',
+    destination: 'Delhi',
+    seats_available: 100,
+    price: 5000
+  },
+  {
+    _id: ObjectId('672f99c597509d5920c73bf9'),
+    flight_id: '6E202',
+    airline: 'Indigo',
+    source: 'Mumbai',
+    destination: 'Chennai',
+    seats_available: 150,
+    price: 4000
+  },
+  {
+    _id: ObjectId('672f99c597509d5920c73bfa'),
+    flight_id: 'SG303',
+    airline: 'SpiceJet',
+    source: 'Bangalore',
+    destination: 'Hyderabad',
+    seats_available: 120,
+    price: 3500
+  }
+]
+flight> db.flights.find().skip(1).sort({ price: -1 }).limit(2)
+[
+  {
+    _id: ObjectId('672f99c597509d5920c73bf9'),
+    flight_id: '6E202',
+    airline: 'Indigo',
+    source: 'Mumbai',
+    destination: 'Chennai',
+    seats_available: 150,
+    price: 4000
+  },
+  {
+    _id: ObjectId('672f99c597509d5920c73bfa'),
+    flight_id: 'SG303',
+    airline: 'SpiceJet',
+    source: 'Bangalore',
+    destination: 'Hyderabad',
+    seats_available: 120,
+    price: 3500
+  }
+]
+flight> db.flights.find()
+[
+  {
+    _id: ObjectId('672f99c597509d5920c73bf8'),
+    flight_id: 'AI101',
+    airline: 'Air India',
+    source: 'Pune',
+    destination: 'Delhi',
+    seats_available: 100,
+    price: 5000
+  },
+  {
+    _id: ObjectId('672f99c597509d5920c73bf9'),
+    flight_id: '6E202',
+    airline: 'Indigo',
+    source: 'Mumbai',
+    destination: 'Chennai',
+    seats_available: 150,
+    price: 4000
+  },
+  {
+    _id: ObjectId('672f99c597509d5920c73bfa'),
+    flight_id: 'SG303',
+    airline: 'SpiceJet',
+    source: 'Bangalore',
+    destination: 'Hyderabad',
+    seats_available: 120,
+    price: 3500
+  }
+]

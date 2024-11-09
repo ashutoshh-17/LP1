@@ -1,0 +1,372 @@
+// FIRST
+
+test> use CompanyDB
+switched to db CompanyDB
+CompanyDB> db.createCollection("employees")
+{ ok: 1 }
+CompanyDB> db.employees.insertMany([
+...     { _id: 1, name: "John Doe", age: 28, position: "Software Engineer", salary: 70000 },
+...     { _id: 2, name: "Jane Smith", age: 34, position: "Project Manager", salary: 90000 },
+...     { _id: 3, name: "Alice Johnson", age: 25, position: "Intern", salary: 30000 }
+... ])
+{ acknowledged: true, insertedIds: { '0': 1, '1': 2, '2': 3 } }
+CompanyDB> db.employees.insertOne({ _id: 1, name: "Mike Brown", age: 30,
+ position: "Analyst", salary: 65000 })
+MongoServerError: E11000 duplicate key error collection: CompanyDB.employees index: _id_ dup key: { _id: 1 }
+CompanyDB> db.employees.deleteOne({ name: "Alice Johnson" })
+{ acknowledged: true, deletedCount: 1 }
+CompanyDB> db.employees.deleteMany({ salary: { $lt: 50000 } })
+{ acknowledged: true, deletedCount: 0 }
+CompanyDB> db.employees.replaceOne({ _id: 2 }, { _id: 2, name: "Jane Doe", age: 35, position: "Senior Project Manager", salary: 95000 })
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+CompanyDB> db.employees.updateOne({ name: "John Doe" }, { $inc: { salarysalary: 5000 } })
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+CompanyDB> db.employees.updateOne({ name: "John Doe" }, { $set: { experiexperience: "5 years" } })
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+CompanyDB> db.employees.updateOne({ _id: 4 }, { $set: { name: "New Employee", age: 40, position: "Consultant", salary: 80000 } }, { upsert: true })
+{
+  acknowledged: true,
+  insertedId: 4,
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 1
+}
+CompanyDB> db.employees.updateMany({ position: "Software Engineer" }, { $inc: { salary: 10000 } })
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+CompanyDB> db.employees.findOneAndUpdate({ name: "John Doe" }, { $set: {
+ position: "Lead Engineer" } }, { returnNewDocument: true })
+{
+  _id: 1,
+  name: 'John Doe',
+  age: 28,
+  position: 'Lead Engineer',
+  salary: 85000,
+  experience: '5 years'
+}
+CompanyDB> dp.dropDatabase()
+ReferenceError: dp is not defined
+CompanyDB> db
+CompanyDB
+CompanyDB> dp.ComapanyDB.dropDatabase()
+ReferenceError: dp is not defined
+CompanyDB> dp.CompanyDB.dropDatabase()
+ReferenceError: dp is not defined
+CompanyDB> db.dropDatabase()
+{ ok: 1, dropped: 'CompanyDB' }
+CompanyDB> db.createCollection("employees")db.createCollection("employees")
+Uncaught:
+SyntaxError: Missing semicolon. (1:32)
+
+> 1 | db.createCollection("employees")db.createCollection("employees")
+    |                                 ^
+  2 |
+
+CompanyDB> db.createCollection("employees")
+{ ok: 1 }
+CompanyDB> db.employees.find()
+
+CompanyDB> db.employees.insertMany([
+...     { _id: 1, name: "John Doe", age: 28, position: "Software Engineer", salary: 70000 },
+...     { _id: 2, name: "Jane Smith", age: 34, position: "Project Manager", salary: 90000 },
+...     { _id: 3, name: "Alice Johnson", age: 25, position: "Intern", salary: 30000 }
+... ])
+{ acknowledged: true, insertedIds: { '0': 1, '1': 2, '2': 3 } }
+CompanyDB> db.employees.find()
+[
+  {
+    _id: 1,
+    name: 'John Doe',
+    age: 28,
+    position: 'Software Engineer',
+    salary: 70000
+  },
+  {
+    _id: 2,
+    name: 'Jane Smith',
+    age: 34,
+    position: 'Project Manager',
+    salary: 90000
+  },
+  {
+    _id: 3,
+    name: 'Alice Johnson',
+    age: 25,
+    position: 'Intern',
+    salary: 30000
+  }
+]
+CompanyDB> db.employees.insertOne({ _id: 1, name: "Mike Brown", age: 30,
+ position: "Analyst", salary: 65000 })
+MongoServerError: E11000 duplicate key error collection: CompanyDB.employees index: _id_ dup key: { _id: 1 }
+CompanyDB> db.employees.find()
+[
+  {
+    _id: 1,
+    name: 'John Doe',
+    age: 28,
+    position: 'Software Engineer',
+    salary: 70000
+  },
+  {
+    _id: 2,
+    name: 'Jane Smith',
+    age: 34,
+    position: 'Project Manager',
+    salary: 90000
+  },
+  {
+    _id: 3,
+    name: 'Alice Johnson',
+    age: 25,
+    position: 'Intern',
+    salary: 30000
+  }
+]
+CompanyDB> db.employees.deleteOne({ name: "Alice Johnson" })
+{ acknowledged: true, deletedCount: 1 }
+CompanyDB> db.employees.deleteMany({ salary: { $lt: 50000 } })
+{ acknowledged: true, deletedCount: 0 }
+CompanyDB> db.employees.find()
+[
+  {
+    _id: 1,
+    name: 'John Doe',
+    age: 28,
+    position: 'Software Engineer',
+    salary: 70000
+  },
+  {
+    _id: 2,
+    name: 'Jane Smith',
+    age: 34,
+    position: 'Project Manager',
+    salary: 90000
+  }
+]
+CompanyDB> db.employees.replaceOne({ _id: 2 }, { _id: 2, name: "Jane Doe
+", age: 35, position: "Senior Project Manager", salary: 95000 })
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+CompanyDB> db.employees.find({ _id: 1 })
+[
+  {
+    _id: 1,
+    name: 'John Doe',
+    age: 28,
+    position: 'Software Engineer',
+    salary: 70000
+  }
+]
+CompanyDB> db.employees.updateOne({ name: "John Doe" }, { $inc: { salarysalary: 5000 } })
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+CompanyDB> db.employees.find()
+[
+  {
+    _id: 1,
+    name: 'John Doe',
+    age: 28,
+    position: 'Software Engineer',
+    salary: 75000
+  },
+  {
+    _id: 2,
+    name: 'Jane Doe',
+    age: 35,
+    position: 'Senior Project Manager',
+    salary: 95000
+  }
+]
+CompanyDB> db.employees.updateOne({ name: "John Doe" }, { $set: { experiexperience: "5 years" } })
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+CompanyDB> db.employees.find()
+[
+  {
+    _id: 1,
+    name: 'John Doe',
+    age: 28,
+    position: 'Software Engineer',
+    salary: 75000,
+    experience: '5 years'
+  },
+  {
+    _id: 2,
+    name: 'Jane Doe',
+    age: 35,
+    position: 'Senior Project Manager',
+    salary: 95000
+  }
+]
+CompanyDB> db.employees.updateOne({ name: "John Doe" }, { $set: { experiexperience: "5 years" } })
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 0,
+  upsertedCount: 0
+}
+CompanyDB> db.employees.find()
+[
+  {
+    _id: 1,
+    name: 'John Doe',
+    age: 28,
+    position: 'Software Engineer',
+    salary: 75000,
+    experience: '5 years'
+  },
+  {
+    _id: 2,
+    name: 'Jane Doe',
+    age: 35,
+    position: 'Senior Project Manager',
+    salary: 95000
+  }
+]
+CompanyDB> db.employees.updateOne({ name: "John Doe" }, { $set: { experiexperience: "5 years" } })
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 0,
+  upsertedCount: 0
+}
+CompanyDB> db.employees.updateOne({ _id: 4 }, { $set: { name: "New Employee", age: 40, position: "Consultant", salary: 80000 } }, { upsert: true })
+{
+  acknowledged: true,
+  insertedId: 4,
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 1
+}
+CompanyDB> db.employees.find()
+[
+  {
+    _id: 1,
+    name: 'John Doe',
+    age: 28,
+    position: 'Software Engineer',
+    salary: 75000,
+    experience: '5 years'
+  },
+  {
+    _id: 2,
+    name: 'Jane Doe',
+    age: 35,
+    position: 'Senior Project Manager',
+    salary: 95000
+  },
+  {
+    _id: 4,
+    age: 40,
+    name: 'New Employee',
+    position: 'Consultant',
+    salary: 80000
+  }
+]
+CompanyDB> db.employees.find()
+[
+  {
+    _id: 1,
+    name: 'John Doe',
+    age: 28,
+    position: 'Software Engineer',
+    salary: 75000,
+    experience: '5 years'
+  },
+  {
+    _id: 2,
+    name: 'Jane Doe',
+    age: 35,
+    position: 'Senior Project Manager',
+    salary: 95000
+  },
+  {
+    _id: 4,
+    age: 40,
+    name: 'New Employee',
+    position: 'Consultant',
+    salary: 80000
+  }
+]
+CompanyDB> db.employees.updateMany({ position: "Software Engineer" }, { $inc: { salary: 10000 } })
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+CompanyDB> db.employees.find({ position: "Software Engineer" })
+[
+  {
+    _id: 1,
+    name: 'John Doe',
+    age: 28,
+    position: 'Software Engineer',
+    salary: 85000,
+    experience: '5 years'
+  }
+]
+CompanyDB> db.employees.findOneAndUpdate({ name: "John Doe" }, { $set: {
+ position: "Lead Engineer" } }, { returnNewDocument: true })
+{
+  _id: 1,
+  name: 'John Doe',
+  age: 28,
+  position: 'Lead Engineer',
+  salary: 85000,
+  experience: '5 years'
+}
+CompanyDB> db.employees.find({ name: "John Doe" })
+[
+  {
+    _id: 1,
+    name: 'John Doe',
+    age: 28,
+    position: 'Lead Engineer',
+    salary: 85000,
+    experience: '5 years'
+  }
+]
+CompanyDB>

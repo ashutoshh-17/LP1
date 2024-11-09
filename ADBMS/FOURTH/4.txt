@@ -1,0 +1,76 @@
+# Step 1: Creating Database and Collection
+
+use mydb;  
+
+db.createCollection("sales");  // Create a collection 'sales'
+
+# View changes made after creating the collection
+
+db.sales.find()
+
+# Step 2: Insert Data into the Collection
+
+db.sales.insertMany([
+  { "_id": 1, "product": "A", "amount": 100, "date": new Date("2024-01-01") },
+  { "_id": 2, "product": "B", "amount": 150, "date": new Date("2024-01-01") },
+  { "_id": 3, "product": "A", "amount": 200, "date": new Date("2024-01-02") },
+  { "_id": 4, "product": "C", "amount": 250, "date": new Date("2024-01-02") },
+  { "_id": 5, "product": "B", "amount": 300, "date": new Date("2024-01-03") }
+]);
+
+# View changes made after inserting data
+db.sales.find()
+
+# Step 3: Aggregation Framework Example
+
+# Aggregation Pipeline to calculate total sales for each product
+db.sales.aggregate([
+  { $group: { _id: "$product", total_sales: { $sum: "$amount" } } }
+]);
+
+# View data after aggregation query
+db.sales.find()
+
+# Aggregation with $match and $sort to filter and sort results
+db.sales.aggregate([
+  { $match: { amount: { $gt: 150 } } },
+  { $group: { _id: "$product", total_sales: { $sum: "$amount" } } },
+  { $sort: { total_sales: -1 } }
+]);
+
+# View data after aggregation with $match and $sort
+db.sales.find()
+
+# Step 4: Map-Reduce Example
+
+# Map function
+var mapFunction = function() {
+  emit(this.product, this.amount);  // Emit product as key, amount as value
+};
+
+# Reduce function
+var reduceFunction = function(key, values) {
+  return Array.sum(values);  // Sum up the values (sales amount)
+};
+
+# Running Map-Reduce
+db.sales.mapReduce(
+  mapFunction,     // Map function
+  reduceFunction,  // Reduce function
+  { out: "total_sales" }  // Output collection
+);
+
+# View data after Map-Reduce
+db.total_sales.find()
+
+# Step 5: Indexing Example
+
+# Create an ascending index on 'product' field
+db.sales.createIndex({ product: 1 });
+
+# View indexes created
+db.sales.getIndexes()
+
+# View data after indexing
+db.sales.find()
+

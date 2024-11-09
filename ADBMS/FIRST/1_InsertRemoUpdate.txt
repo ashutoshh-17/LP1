@@ -1,0 +1,69 @@
+mongo 
+
+#Step 1: Create a Database and Collection
+
+use CompanyDB
+
+db.createCollection("employees")
+
+db.employees.find()
+
+
+#Step 2: Inserting and Saving Documents
+(i) Batch Insert with Validation
+
+db.employees.insertMany([
+    { _id: 1, name: "John Doe", age: 28, position: "Software Engineer", salary: 70000 },
+    { _id: 2, name: "Jane Smith", age: 34, position: "Project Manager", salary: 90000 },
+    { _id: 3, name: "Alice Johnson", age: 25, position: "Intern", salary: 30000 }
+])
+
+db.employees.find()
+
+# Insert validation example (will throw an error due to duplicate _id)
+db.employees.insertOne({ _id: 1, name: "Mike Brown", age: 30, position: "Analyst", salary: 65000 })
+
+db.employees.find()
+
+#Step 3: Removing Documents
+
+db.employees.deleteOne({ name: "Alice Johnson" })
+
+db.employees.deleteMany({ salary: { $lt: 50000 } })
+
+db.employees.find()
+
+#Step 4: Updating Documents
+#(i) Document Replacement
+# Replace the document with _id: 2
+
+db.employees.replaceOne({ _id: 2 }, { _id: 2, name: "Jane Doe", age: 35, position: "Senior Project Manager", salary: 95000 })
+db.employees.find({ _id: 1 })
+
+#(ii) Using Modifiers
+# Increase the salary of John Doe by 5000
+
+db.employees.updateOne({ name: "John Doe" }, { $inc: { salary: 5000 } })
+db.employees.find()
+
+#Set a new field 'experience' for John Doe
+
+db.employees.updateOne({ name: "John Doe" }, { $set: { experience: "5 years" } })
+
+#(iii) Upserts (Update or Insert if not exists)
+# Upsert example: If no document with _id: 4 exists, insert it
+
+db.employees.updateOne({ _id: 4 }, { $set: { name: "New Employee", age: 40, position: "Consultant", salary: 80000 } }, { upsert: true })
+db.employees.find()
+
+#(iv) Updating Multiple Documents
+# Increase the salary of all employees with the position "Software Engineer" by 10000
+
+db.employees.updateMany({ position: "Software Engineer" }, { $inc: { salary: 10000 } })
+db.employees.find({ position: "Software Engineer" })
+
+#(v) Returning Updated Documents
+# Find and modify to return the updated document
+
+db.employees.findOneAndUpdate({ name: "John Doe" }, { $set: { position: "Lead Engineer" } }, { returnNewDocument: true })
+db.employees.find({ name: "John Doe" })

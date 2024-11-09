@@ -1,0 +1,69 @@
+// Connect to MongoDB and create the database
+use mydb;  // Create or switch to 'mydb' database
+
+// Insert sample data into 'sales' collection
+db.sales.insertMany([
+    { "_id": 1, "item": "apple", "price": 1, "quantity": 100 },
+    { "_id": 2, "item": "banana", "price": 2, "quantity": 150 },
+    { "_id": 3, "item": "orange", "price": 1.5, "quantity": 200 },
+    { "_id": 4, "item": "apple", "price": 1, "quantity": 250 },
+    { "_id": 5, "item": "banana", "price": 2, "quantity": 50 }
+]);
+
+// View inserted data
+db.sales.find().pretty();
+
+// MapReduce Example: Calculate total sales per item
+var mapFunction = function() {
+    emit(this.item, this.price * this.quantity);
+};
+
+var reduceFunction = function(key, values) {
+    return Array.sum(values);
+};
+
+// Perform MapReduce and output to 'sales_total' collection
+var result = db.sales.mapReduce(mapFunction, reduceFunction, { out: "sales_total" });
+
+// View MapReduce result
+db.sales_total.find().pretty();
+
+// Aggregation Example: Calculate total sales per item
+db.sales.aggregate([
+    { 
+        $group: {
+            _id: "$item", 
+            total_sales: { $sum: { $multiply: ["$price", "$quantity"] } }
+        }
+    }
+]);
+
+// Indexing Examples
+// Create an index on 'item' field
+db.sales.createIndex({ "item": 1 });
+
+// Create a compound index on 'item' and 'price'
+db.sales.createIndex({ "item": 1, "price": 1 });
+
+// Create a text index on 'item' field
+db.sales.createIndex({ "item": "text" });
+
+// View the indexes on the 'sales' collection
+db.sales.getIndexes();
+
+// Drop the 'item' index
+db.sales.dropIndex("item_1");
+
+// View indexes after dropping
+db.sales.getIndexes();
+
+// Query without index (slower)
+db.sales.find({ "item": "apple" }).pretty();
+
+// Query with index (faster)
+db.sales.find({ "item": "banana" }).pretty();
+
+// Drop the entire database (if needed)
+use mydb;
+db.dropDatabase();
+

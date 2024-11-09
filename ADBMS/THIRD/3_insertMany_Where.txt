@@ -1,0 +1,80 @@
+# Step 1: Create Database and Collection
+use flight_management_system
+db.createCollection("flights")
+
+# View changes made after creating the collection
+db.flights.find()
+
+# Step 2: Batch Insert Documents
+db.flights.insertMany([
+  { flight_id: "AI101", airline: "Air India", source: "Pune", destination: "Delhi", seats_available: 100, price: 5000 },
+  { flight_id: "6E202", airline: "Indigo", source: "Mumbai", destination: "Chennai", seats_available: 150, price: 4000 },
+  { flight_id: "SG303", airline: "SpiceJet", source: "Bangalore", destination: "Hyderabad", seats_available: 120, price: 3500 }
+])
+
+# View changes made after inserting documents
+db.flights.find()
+
+# Step 3: $where Query Examples
+
+# Find flights where seats available are greater than 120
+db.flights.find({ $where: "this.seats_available > 120" })
+
+# View data after $where query
+db.flights.find()
+
+# Find flights where price is greater than 4000 and seats available are less than 150
+db.flights.find({ $where: "this.price > 4000 && this.seats_available < 150" })
+
+# View data after $where query
+db.flights.find()
+
+# Find flights where the airline is Air India and price is greater than 4500
+db.flights.find({ $where: "this.airline === 'Air India' && this.price > 4500" })
+
+# View data after $where query
+db.flights.find()
+
+# Step 4: Cursor Operations
+
+# Limit the number of results to 2
+db.flights.find().limit(2)
+
+# View data after limit operation
+db.flights.find()
+
+# Skip 1 document and limit to 2 results
+db.flights.find().skip(1).limit(2)
+
+# View data after skip and limit operation
+db.flights.find()
+
+# Sort documents by price in descending order
+db.flights.find().sort({ price: -1 })
+
+# View data after sorting by price
+db.flights.find()
+
+# Sort documents by price in ascending order
+db.flights.find().sort({ price: 1 })
+
+# View data after sorting by price (ascending)
+db.flights.find()
+
+# Find the first document that matches the query and limit it to 1 document
+db.flights.find({ seats_available: { $lt: 130 } }).limit(1)
+
+# View data after finding first matching document
+db.flights.find()
+
+# Find flights that are either from Pune or Mumbai (OR query)
+db.flights.find({ $or: [{ source: "Pune" }, { source: "Mumbai" }] })
+
+# View data after OR query
+db.flights.find()
+
+# Skip 1 document, sort by price in descending order, and limit to 2 results
+db.flights.find().skip(1).sort({ price: -1 }).limit(2)
+
+# View data after complex cursor operation
+db.flights.find()

@@ -1,0 +1,101 @@
+//FIFTH
+
+test> use fifth;
+switched to db fifth
+fifth> db.sales.insertMany([
+...     { "_id": 1, "item": "apple", "price": 1, "quantity": 100 },
+...     { "_id": 2, "item": "banana", "price": 2, "quantity": 150 },
+...     { "_id": 3, "item": "orange", "price": 1.5, "quantity": 200 },
+...     { "_id": 4, "item": "apple", "price": 1, "quantity": 250 },
+...     { "_id": 5, "item": "banana", "price": 2, "quantity": 50 }
+... ]);
+{
+  acknowledged: true,
+  insertedIds: { '0': 1, '1': 2, '2': 3, '3': 4, '4': 5 }
+}
+fifth> db.sales.find().pretty();
+[
+  { _id: 1, item: 'apple', price: 1, quantity: 100 },
+  { _id: 2, item: 'banana', price: 2, quantity: 150 },
+  { _id: 3, item: 'orange', price: 1.5, quantity: 200 },
+  { _id: 4, item: 'apple', price: 1, quantity: 250 },
+  { _id: 5, item: 'banana', price: 2, quantity: 50 }
+]
+fifth> var mapFunction = function() {
+...     emit(this.item, this.price * this.quantity);
+... };
+
+fifth> var reduceFunction = function(key, values) {
+...     return Array.sum(values);
+... };
+
+fifth> var result = db.sales.mapReduce(mapFunction, reduceFunction, { ouout: "sales_total" });
+DeprecationWarning: Collection.mapReduce() is deprecated. Use an aggregation instead.
+See https://docs.mongodb.com/manual/core/map-reduce for details.
+
+fifth> db.sales_total.find().pretty();
+[
+  { _id: 'banana', value: 400 },
+  { _id: 'orange', value: 300 },
+  { _id: 'apple', value: 350 }
+]
+fifth> db.sales.aggregate([
+...     {
+...         $group: {
+...             _id: "$item",
+...             total_sales: { $sum: { $multiply: ["$price", "$quantity"] } }
+...         }
+...     }
+... ]);
+[
+  { _id: 'apple', total_sales: 350 },
+  { _id: 'banana', total_sales: 400 },
+  { _id: 'orange', total_sales: 300 }
+]
+fifth> db.sales.createIndex({ "item": 1 });
+item_1
+fifth> db.sales.createIndex({ "item": 1, "price": 1 });
+item_1_price_1
+fifth> db.sales.createIndex({ "item": "text" });
+item_text
+fifth> db.sales.getIndexes();
+[
+  { v: 2, key: { _id: 1 }, name: '_id_' },
+  { v: 2, key: { item: 1 }, name: 'item_1' },
+  { v: 2, key: { item: 1, price: 1 }, name: 'item_1_price_1' },
+  {
+    v: 2,
+    key: { _fts: 'text', _ftsx: 1 },
+    name: 'item_text',
+    weights: { item: 1 },
+    default_language: 'english',
+    language_override: 'language',
+    textIndexVersion: 3
+  }
+]
+fifth> db.sales.dropIndex("item_1");
+{ nIndexesWas: 4, ok: 1 }
+fifth> db.sales.getIndexes();
+[
+  { v: 2, key: { _id: 1 }, name: '_id_' },
+  { v: 2, key: { item: 1, price: 1 }, name: 'item_1_price_1' },
+  {
+    v: 2,
+    key: { _fts: 'text', _ftsx: 1 },
+    name: 'item_text',
+    weights: { item: 1 },
+    default_language: 'english',
+    language_override: 'language',
+    textIndexVersion: 3
+  }
+]
+fifth> db.sales.find({ "item": "apple" }).pretty();
+[
+  { _id: 1, item: 'apple', price: 1, quantity: 100 },
+  { _id: 4, item: 'apple', price: 1, quantity: 250 }
+]
+fifth> db.sales.find({ "item": "banana" }).pretty();
+[
+  { _id: 2, item: 'banana', price: 2, quantity: 150 },
+  { _id: 5, item: 'banana', price: 2, quantity: 50 }
+]

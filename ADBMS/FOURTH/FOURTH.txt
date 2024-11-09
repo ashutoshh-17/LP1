@@ -1,0 +1,200 @@
+//FOURTH
+
+test> use mydb;
+switched to db mydb
+mydb> db.createCollection("sales");
+{ ok: 1 }
+mydb> db.sales.find()
+
+mydb> db.sales.insertMany([
+...   { "_id": 1, "product": "A", "amount": 100, "date": new Date("2024-01-01") },
+...   { "_id": 2, "product": "B", "amount": 150, "date": new Date("2024-01-01") },
+...   { "_id": 3, "product": "A", "amount": 200, "date": new Date("2024-01-02") },
+...   { "_id": 4, "product": "C", "amount": 250, "date": new Date("2024-01-02") },
+...   { "_id": 5, "product": "B", "amount": 300, "date": new Date("2024-
+01-03") }
+... ]);
+{
+  acknowledged: true,
+  insertedIds: { '0': 1, '1': 2, '2': 3, '3': 4, '4': 5 }
+}
+mydb> db.sales.find()
+[
+  {
+    _id: 1,
+    product: 'A',
+    amount: 100,
+    date: ISODate('2024-01-01T00:00:00.000Z')
+  },
+  {
+    _id: 2,
+    product: 'B',
+    amount: 150,
+    date: ISODate('2024-01-01T00:00:00.000Z')
+  },
+  {
+    _id: 3,
+    product: 'A',
+    amount: 200,
+    date: ISODate('2024-01-02T00:00:00.000Z')
+  },
+  {
+    _id: 4,
+    product: 'C',
+    amount: 250,
+    date: ISODate('2024-01-02T00:00:00.000Z')
+  },
+  {
+    _id: 5,
+    product: 'B',
+    amount: 300,
+    date: ISODate('2024-01-03T00:00:00.000Z')
+  }
+]
+mydb> db.sales.aggregate([
+...   { $group: { _id: "$product", total_sales: { $sum: "$amount" } } }
+... ]);
+[
+  { _id: 'B', total_sales: 450 },
+  { _id: 'C', total_sales: 250 },
+  { _id: 'A', total_sales: 300 }
+]
+mydb> db.sales.find()
+[
+  {
+    _id: 1,
+    product: 'A',
+    amount: 100,
+    date: ISODate('2024-01-01T00:00:00.000Z')
+  },
+  {
+    _id: 2,
+    product: 'B',
+    amount: 150,
+    date: ISODate('2024-01-01T00:00:00.000Z')
+  },
+  {
+    _id: 3,
+    product: 'A',
+    amount: 200,
+    date: ISODate('2024-01-02T00:00:00.000Z')
+  },
+  {
+    _id: 4,
+    product: 'C',
+    amount: 250,
+    date: ISODate('2024-01-02T00:00:00.000Z')
+  },
+  {
+    _id: 5,
+    product: 'B',
+    amount: 300,
+    date: ISODate('2024-01-03T00:00:00.000Z')
+  }
+]
+mydb> db.sales.aggregate([
+...   { $match: { amount: { $gt: 150 } } },
+...   { $group: { _id: "$product", total_sales: { $sum: "$amount" } } },
+
+...   { $sort: { total_sales: -1 } }
+... ]);
+[
+  { _id: 'B', total_sales: 300 },
+  { _id: 'C', total_sales: 250 },
+  { _id: 'A', total_sales: 200 }
+]
+mydb> db.sales.find()
+[
+  {
+    _id: 1,
+    product: 'A',
+    amount: 100,
+    date: ISODate('2024-01-01T00:00:00.000Z')
+  },
+  {
+    _id: 2,
+    product: 'B',
+    amount: 150,
+    date: ISODate('2024-01-01T00:00:00.000Z')
+  },
+  {
+    _id: 3,
+    product: 'A',
+    amount: 200,
+    date: ISODate('2024-01-02T00:00:00.000Z')
+  },
+  {
+    _id: 4,
+    product: 'C',
+    amount: 250,
+    date: ISODate('2024-01-02T00:00:00.000Z')
+  },
+  {
+    _id: 5,
+    product: 'B',
+    amount: 300,
+    date: ISODate('2024-01-03T00:00:00.000Z')
+  }
+]
+mydb> var mapFunction = function() {
+...   emit(this.product, this.amount);  // Emit product as key, amount as value
+... };
+
+mydb> var reduceFunction = function(key, values) {
+...   return Array.sum(values);  // Sum up the values (sales amount)
+... };
+
+mydb> db.sales.mapReduce(
+...   mapFunction,     // Map function
+...   reduceFunction,  // Reduce function
+...   { out: "total_sales" }  // Output collection
+... );
+DeprecationWarning: Collection.mapReduce() is deprecated. Use an aggregation instead.
+See https://docs.mongodb.com/manual/core/map-reduce for details.
+{ result: 'total_sales', ok: 1 }
+mydb> db.total_sales.find()
+[
+  { _id: 'C', value: 250 },
+  { _id: 'A', value: 300 },
+  { _id: 'B', value: 450 }
+]
+mydb> db.sales.createIndex({ product: 1 });
+product_1
+mydb> db.sales.getIndexes()
+[
+  { v: 2, key: { _id: 1 }, name: '_id_' },
+  { v: 2, key: { product: 1 }, name: 'product_1' }
+]
+mydb> db.sales.find()
+[
+  {
+    _id: 1,
+    product: 'A',
+    amount: 100,
+    date: ISODate('2024-01-01T00:00:00.000Z')
+  },
+  {
+    _id: 2,
+    product: 'B',
+    amount: 150,
+    date: ISODate('2024-01-01T00:00:00.000Z')
+  },
+  {
+    _id: 3,
+    product: 'A',
+    amount: 200,
+    date: ISODate('2024-01-02T00:00:00.000Z')
+  },
+  {
+    _id: 4,
+    product: 'C',
+    amount: 250,
+    date: ISODate('2024-01-02T00:00:00.000Z')
+  },
+  {
+    _id: 5,
+    product: 'B',
+    amount: 300,
+    date: ISODate('2024-01-03T00:00:00.000Z')
+  }
+]
