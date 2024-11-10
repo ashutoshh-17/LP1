@@ -13,9 +13,6 @@ df.dtypes
 x=df.iloc[:,0].values
 y=df.iloc[:,13].values
 plt.scatter(x,y,color='b',marker='o',s=80)
-type(b)
-print('intercept',b[0])
-print('slope',b[1])
 plt.show()
 ---------------------------------------
 x.shape
@@ -40,6 +37,8 @@ print('Intercept',c)
 y_pred=regression.predict(x_test)
 print(y_pred)
 ----------------------------------------
+regression.predict([[2018]])
+-------------------------------------
 df1=pd.DataFrame({'Actual value':y_test.flatten(),'Predicted Value':y_pred.flatten()})
 df1
 ---------------------------------------
